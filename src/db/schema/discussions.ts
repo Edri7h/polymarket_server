@@ -7,7 +7,7 @@ import { timestamp } from "drizzle-orm/pg-core";
 
 
 
-export const discussion = pgTable("discussion", {
+export const discussions = pgTable("discussion", {
     id:uuid("id").defaultRandom().primaryKey(),
     userId:uuid("user_id").notNull().references(() => users.id),
     eventId:uuid("event_id").notNull().references(() => events.id),

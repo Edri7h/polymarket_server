@@ -1,19 +1,18 @@
-import "dotenv/config";
+import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 
+import { env } from "../config/env";
+
+import * as relations from "./relations";
+import * as tables from "./schema/index";
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: env.DATABASE_URL,
 });
 
-async function test() {
-  try {
-    const res = await pool.query("SELECT NOW()");
-    console.log("DB CONNECTED ✅");
-    console.log(res.rows);
-  } catch (err) {
-    console.error("DB FAILED ❌");
-    console.error(err);
-  }
-}
-
-test();
+export const db = drizzle(pool, {
+  schema: {
+    ...tables,
+    ...relations,
+  },
+});

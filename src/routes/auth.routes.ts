@@ -1,0 +1,21 @@
+import { Router } from "express";
+
+import authController from "../controllers/auth.controller";
+import { authMiddleware } from "../middleware/auth.middleware";
+
+const router = Router();
+
+router.post(
+  "/google",
+  authController.googleAuth
+);
+
+router.get(
+  "/me",
+  authMiddleware,
+  authController.getMe
+);
+
+router.post("/logout", authMiddleware,authController.logout);
+
+export default router;

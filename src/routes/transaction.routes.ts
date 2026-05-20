@@ -1,15 +1,15 @@
 import { Router } from "express";
 
-import VotesController from "../controllers/votes.controller";
+import TransactionsController from "../controllers/transaction.controller";
 
 import { authMiddleware } from "../middleware/auth.middleware";
 
 const router = Router();
 
-router.post(
-  "/",
+router.get(
+  "/me",
   authMiddleware,
-  VotesController.placeVote
+  TransactionsController.getMyTransactions
 );
 
 export default router;

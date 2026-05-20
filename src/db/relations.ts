@@ -6,8 +6,8 @@ import { events } from "./schema/events";
 import { discussions } from "./schema/discussions";
 import { eventCategories } from "./schema/categories";
 import { eventOptions } from "./schema/eventOptions";
-import { eventSentimentHistory } from "./schema/eventsentimentHistory";
-
+import { eventSentimentHistory } from "./schema/eventSentimentHistory";
+import { pointTransactions } from "./schema/pointTransactions";
 
 // export const usersRelations = relations(users, ({ many }) => ({
 //     votes: many(votes),
@@ -116,6 +116,7 @@ export const usersRelations = relations(users, ({ many }) => ({
   events: many(events),
 
   discussions: many(discussions),
+  transactions: many(pointTransactions),
 }));
 
 
@@ -133,7 +134,7 @@ export const eventsRelations = relations(events, ({ one, many }) => ({
   }),
 
   options: many(eventOptions),
-
+  transactions: many(pointTransactions),
   votes: many(votes),
 
   discussions: many(discussions),
@@ -161,7 +162,7 @@ export const eventOptionsRelations = relations(
 
 // ================= VOTES =================
 
-export const votesRelations = relations(votes, ({ one }) => ({
+export const votesRelations = relations(votes, ({ one,many }) => ({
   user: one(users, {
     fields: [votes.userId],
     references: [users.id],
@@ -176,6 +177,7 @@ export const votesRelations = relations(votes, ({ one }) => ({
     fields: [votes.eventOptionId],
     references: [eventOptions.id],
   }),
+  transactions: many(pointTransactions)
 }));
 
 
@@ -223,3 +225,27 @@ export const eventSentimentHistoryRelations = relations(
     }),
   })
 );
+
+
+export const pointTransactionsRelations =
+  relations(
+    pointTransactions,
+    ({ one }) => ({
+
+      user: one(users, {
+        fields: [pointTransactions.userId],
+        references: [users.id],
+      }),
+
+      event: one(events, {
+        fields: [pointTransactions.eventId],
+        references: [events.id],
+      }),
+
+      vote: one(votes, {
+        fields: [pointTransactions.voteId],
+        references: [votes.id],
+      }),
+
+    })
+  );

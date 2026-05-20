@@ -1,9 +1,19 @@
-import { drizzle } from "drizzle-orm/node-postgres";
+import "dotenv/config";
 import { Pool } from "pg";
-import { env } from "../config/env";
 
 const pool = new Pool({
-  connectionString: env.DATABASE_URL,
+  connectionString: process.env.DATABASE_URL,
 });
 
-export const db = drizzle(pool);
+async function test() {
+  try {
+    const res = await pool.query("SELECT NOW()");
+    console.log("DB CONNECTED ✅");
+    console.log(res.rows);
+  } catch (err) {
+    console.error("DB FAILED ❌");
+    console.error(err);
+  }
+}
+
+test();

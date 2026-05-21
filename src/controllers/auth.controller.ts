@@ -28,8 +28,8 @@ class AuthController {
 
       res.cookie("token", data.token, {
         httpOnly: true,
-        secure: false, // true in production
-        sameSite: "lax",
+        secure: true, // true in production
+        sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
 
@@ -87,8 +87,8 @@ class AuthController {
   ) {
     res.clearCookie("token", {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
     });
 
     return res.status(200).json({
